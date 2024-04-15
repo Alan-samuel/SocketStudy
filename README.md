@@ -57,35 +57,36 @@ Socket programming finds applications in various domains, including web developm
 5.	RPC mechanisms: which allow processes to execute code on a remote server, often use socket programming for communication.
 
 Program:
-Client:
 import socket
+from datetime import datetime
 s=socket.socket()
 s.bind(('localhost',8000))
 s.listen(5)
 c,addr=s.accept()
-while True:
-    i=input("Enter Data : ")
-    c.send(i.encode())
-    ack=c.recv(1024).decode()
-    if ack:
-        print(ack)
-        continue
-    else:
-        c.close()
-        break
+print("Client Address : ",addr)
+now = datetime.now()
+c.send(now.strftime("%d/%m/%Y %H:%M:%S").encode())
+ack=c.recv(1024).decode()
+if ack:
+ print(ack)
+c.close()
 
 Server:
 
 import socket
 s=socket.socket()
 s.connect(('localhost',8000))
-while True:
-    print(s.recv(1024).decode())
-    s.send("Acknowledgemet recieved".encode())
+print(s.getsockname())
+print(s.recv(1024).decode())
+s.send("acknowledgement recived from the server".encode())
 
 Output:
 
-![Screenshot 2024-04-14 230431](https://github.com/Alan-samuel/SocketStudy/assets/147091803/60a0bae3-d547-49e7-a189-5b11472daccb)
+CLIENT:
+![image](https://github.com/Alan-samuel/SocketStudy/assets/147091803/9d955c00-eec1-4378-bded-bc9568979e4b)
+
+SERVER:
+![image](https://github.com/Alan-samuel/SocketStudy/assets/147091803/861063e3-0cf9-40c5-93c0-5512a6cfd227)
 
 
 ## Result:
